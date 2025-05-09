@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Записаться онлайн</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <header>
+        <h1>Записаться онлайн</h1>
+        <nav>
+            <a href="shop.html">Магазин</a>
+            <a href="services.html">Услуги</a>
+            <a href="about.html">О нас</a>
+            <a href="reviews.html">Отзывы</a>
+            <a href="contacts.html">Контакты</a>
+        </nav>
+    </header>
+    
+    <section class="main-content">
+        <form action="https://formspree.io/f/xjkwowkn" method="post"> <!-- Replace "#" with your form submission URL -->
+            <label for="name">Имя:</label><br>
+            <input type="text" id="name" name="name"><br><br>
+
+            <label for="phone">Телефон:</label><br>
+            <input type="tel" id="phone" name="phone"><br><br>
+
+            <label for="pet_name">Имя питомца:</label><br>
+            <input type="text" id="pet_name" name="pet_name"><br><br>
+
+            <div id="services-container">
+                <div class="service-row">
+                  <label>Выберите услугу:</label><br>
+                  <select name="service">
+                    <option value="grooming" data-price="2499">Стрижка</option>
+                    <option value="bathing" data-price="1799">Вычесывание</option>
+                    <option value="nails" data-price="999">Подстригание когтей</option>
+                    <option value="other" data-price="1499">Экспресс-линька</option>
+                    <option value="spa" data-price="1399">Спа-процедуры</option>
+                    <option value="truki" data-price="2999">Дрессировка трюкам</option>
+                    <option value="stilist" data-price="6799">Персональный стилист</option>
+                  </select>
+                  <button type="button" class="remove-btn">–</button>
+                </div>
+              </div>
+              
+              <!-- Добавляем + с ID -->
+              <button type="button" id="add-service-btn">+</button><br><br>
+              
+              <p>Итого: <strong><span id="total-price">0</span> ₽</strong></p>
+              <input type="submit" value="Отправить">
+            </form>
+            
+            <button onclick="window.location.href='index.html'"> На главную </button>
+        </section>
+    
+        <script src="script.js"></script>
+    
+        <footer align="center">
+            <p><a href="mailto:likaorenburg@gmail.com">likaorenburg@gmail.com</a></p>
+            <p>+79228922947</p>
+        </footer>
+        
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const container = document.getElementById('services-container');
+                  const addBtn = document.getElementById('add-service-btn');
+                
+                  addBtn.addEventListener('click', function () {
+                    const template = container.querySelector('.service-row');
+                    const clone = template.cloneNode(true);
+                    container.appendChild(clone);
+                    calculateTotal();
+                  });
+                
+                  container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-btn')) {
+                      const rows = container.querySelectorAll('.service-row');
+                      if (rows.length > 1) {
+                        e.target.closest('.service-row').remove();
+                        calculateTotal();
+                      } else {
+                        alert('Должна остаться хотя бы одна услуга.');
+                      }
+                    }
+                  });
+                
+                  container.addEventListener('change', function (e) {
+                    if (e.target.matches('select[name="service"]')) {
+                      calculateTotal();
+                    }
+                  });
+                
+                  function calculateTotal() {
+                    let sum = 0;
+                    const selects = container.querySelectorAll('select[name="service"]');
+                    selects.forEach(sel => {
+                      const price = parseInt(sel.selectedOptions[0].dataset.price, 10) || 0;
+                      sum += price;
+                    });
+                    document.getElementById('total-price').textContent = sum.toLocaleString('ru-RU');
+                  }
+                
+                  calculateTotal();
+                });
+                </script>
+</body>
+</html>

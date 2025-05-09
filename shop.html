@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Наш магазин</title>
+  <link rel="stylesheet" href="shop.css" />
+</head>
+<body>
+  <header>
+    <h1>Наш магазин</h1>
+    <nav>
+      <a href="shop.html">Магазин</a>
+      <a href="services.html">Услуги</a>
+      <a href="about.html">О нас</a>
+      <a href="reviews.html">Отзывы</a>
+      <a href="contacts.html">Контакты</a>
+    </nav>
+    <img src="pic/4.png" alt="Drawing of girl and dog" style="float:right" width="100" />
+  </header>
+
+  <section class="main-content">
+    <div class="product-categories" id="products">
+      <div class="category" data-name="Шампунь" data-price="499">
+        <h3>Шампуни</h3>
+        <p>Средства гигиены для питомцев</p>
+        <p>Цена: 499 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Амуниция" data-price="1299">
+        <h3>Амуниция</h3>
+        <p>Долговечная амуниция</p>
+        <p>Цена: 1 299 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Корм" data-price="1799">
+        <h3>Корм</h3>
+        <p>Лучший вариант питания</p>
+        <p>Цена: 1 799 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Лакомство" data-price="599">
+        <h3>Лакомство "Вкусняшки"</h3>
+        <p>Поощрение для любимца</p>
+        <p>Цена: 599 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Лежанка" data-price="2499">
+        <h3>Лежанка "Уютный Домик"</h3>
+        <p>Мягкое место для сна</p>
+        <p>Цена: 2 499 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Автокормушка" data-price="1899">
+        <h3>Миска "Автокормушка"</h3>
+        <p>Миска с автоподачей</p>
+        <p>Цена: 1 899 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Ошейник" data-price="799">
+        <h3>Ошейник "Светоотражающий"</h3>
+        <p>Светоотражающий ошейник</p>
+        <p>Цена: 799 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Переноска" data-price="3199">
+        <h3>Переноска "Комфорт"</h3>
+        <p>Надёжная переноска</p>
+        <p>Цена: 3 199 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+
+      <div class="category" data-name="Щетка" data-price="999">
+        <h3>Щетка "Блеск"</h3>
+        <p>Эффективная щетка</p>
+        <p>Цена: 999 ₽</p>
+        <button onclick="addToCart(this)">Добавить в корзину</button>
+      </div>
+    </div>
+ <img src="pic/2.png" alt="Drawing of girl and dog" width="300"/>
+        <br></br>
+
+    <div id="cart">
+      <h2>🛒 Ваша корзина</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Сумма заказа: <span id="total">0</span> ₽</strong></p>
+    </div>
+
+    <hr>
+<h2>Оформить заказ</h2>
+<form id="order-form" action="https://formspree.io/f/xjkwowkn" method="POST">
+    <label for="name">Ваше имя:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label for="email">Ваш Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <input type="hidden" name="cart" id="cart-hidden">
+    <input type="hidden" name="total" id="total-hidden">
+
+    <button type="submit">Отправить заказ</button>
+</form>  
+
+    <br>
+    <button class="signup-button" onclick="window.location.href='sign_up.html'">Записаться онлайн</button>
+    <button onclick="window.location.href='index.html'">На главную</button>
+  </section>
+
+  <footer align="center">
+    <p><a href="mailto:likaorenburg@gmail.com">likaorenburg@gmail.com</a></p>
+    <p>+7 922 892-29-47</p>
+  </footer>
+
+  <script>
+    const cartItems = [];
+    function addToCart(button) {
+      const item = button.closest('.category');
+      const name = item.dataset.name;
+      const price = parseInt(item.dataset.price);
+
+      cartItems.push({ name, price });
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cart-items');
+      cartList.innerHTML = '';
+      let total = 0;
+
+      cartItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} — ${item.price} ₽`;
+        cartList.appendChild(li);
+        total += item.price;
+      });
+      document.getElementById('total').textContent = total;
+    }
+  </script>
+</body>
+</html>
